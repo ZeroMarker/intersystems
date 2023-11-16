@@ -42,6 +42,7 @@ Method PrintCompany() As %Status
 {
     write !, "The company is named ", ..Name , "."
     write !, ..Name, " has actived in ", ..Industry, " for ", ..YearActived, " years."
+    write !, "This company is at ", ..#COUNTRY
     return $$$OK
 }
 

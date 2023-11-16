@@ -4,7 +4,8 @@ hello() public {
     write "Hello World"
 }
 
-///d hello^Demo.First
-///w $$hello^Demo.First
+///d hello^demo.First
+///w $$hello^demo.First
+///w hello^demo.First(1)
 
 /// $$ALPHAUP
