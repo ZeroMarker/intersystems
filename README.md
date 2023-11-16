@@ -17,7 +17,7 @@ docker run -d -p 52773:52773 --init --name iris intersystems/irishealth-communit
 
 ## Then open Management portal in your host browser on:
 
-http://localhost:52773/csp/sys/UtilHome.csp
+https://207.148.28.9:52773/csp/sys/UtilHome.csp
 
 ## Or open a terminal to IRIS:
 ```sh
