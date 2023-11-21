@@ -1,7 +1,8 @@
 ROUTINE demo.First
-hello() public {
-    set sum =  1 + 2
-    write "Hello World"
+hello(a, b) public {
+    set sum =  a + b
+    w sum, !
+    write "Hello World",!
 }
 
 ///d hello^demo.First

@@ -1,6 +1,6 @@
 {
     "objectscript.conn": {
-        "server": "my-iris",
+        "server": "iris",
         "ns": "USER",
         "active": true,
         "username": "_SYSTEM",

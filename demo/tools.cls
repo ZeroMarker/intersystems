@@ -15,7 +15,16 @@ ClassMethod FileExist() As %Status
 {
     Set sc = $$$OK
     // do something
-    Set state = ##class(%File)Exists("D:\work\hello.txt")
+    If ##class(%File).Exists("file.txt") Write "It exists",!
+    Return sc
+}
+
+/// Description
+ClassMethod Routine() As %Status
+{
+    Set sc = $$$OK
+    // do something
+    d hello^demo.First(1, 3)
     Return sc
 }
 
