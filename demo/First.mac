@@ -3,6 +3,7 @@ hello(a, b) public {
     set sum =  a + b
     w sum, !
     write "Hello World",!
+    return sum
 }
 
 ///d hello^demo.First

@@ -20,12 +20,18 @@ ClassMethod FileExist() As %Status
 }
 
 /// Description
-ClassMethod Routine() As %Status
+ClassMethod Routine(a As %String, b As %String) As %Status
 {
     Set sc = $$$OK
     // do something
-    d hello^demo.First(1, 3)
+    d hello^demo.First(a,b)
     Return sc
+}
+
+ClassMethod Sum(a, b)
+{
+    Set sum = a + b
+    Return sum
 }
 
 }
