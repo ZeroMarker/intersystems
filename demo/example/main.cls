@@ -61,6 +61,7 @@ Method MethodThis(arg As demo.example.main)
     Set arg1 = "this"
     Set arg2 = "is"
     Set arg3 = "a"
+    // pass address
     Do MyMethod(arg1, .arg2, .arg3)
     return arg.Name
 }

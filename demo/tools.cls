@@ -34,4 +34,14 @@ ClassMethod Sum(a, b)
     Return sum
 }
 
+ClassMethod Test()
+{
+    s ^Student("Code", "01",1) = ""
+    s ^Student("Code", "02",3) = ""
+    s ^Student("Code", "04",5) = ""
+    s code = "03"
+    s stu = $o(^Student("Code", code, 0))
+    q stu
+}
+
 }
