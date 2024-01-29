@@ -1,4 +1,4 @@
-Class demo.Company Extends (%Persistent, %Populate) [ SqlTableName = Company ]
+Class demo.entity.Company Extends (%Persistent, %Populate) [ SqlTableName = Company ]
 {
 
 Property Name As %String [ Required ];
@@ -67,11 +67,11 @@ Storage Default
 <Value>Industry</Value>
 </Value>
 </Data>
-<DataLocation>^demo.CompanyD</DataLocation>
+<DataLocation>^demo.entity.CompanyD</DataLocation>
 <DefaultData>CompanyDefaultData</DefaultData>
-<IdLocation>^demo.CompanyD</IdLocation>
-<IndexLocation>^demo.CompanyI</IndexLocation>
-<StreamLocation>^demo.CompanyS</StreamLocation>
+<IdLocation>^demo.entity.CompanyD</IdLocation>
+<IndexLocation>^demo.entity.CompanyI</IndexLocation>
+<StreamLocation>^demo.entity.CompanyS</StreamLocation>
 <Type>%Storage.Persistent</Type>
 }
 

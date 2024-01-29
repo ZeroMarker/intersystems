@@ -1,4 +1,4 @@
-Class demo.Hello Extends %CSP.Page
+Class demo.csp.Hello Extends %CSP.Page
 {
 
 ClassMethod OnPage() As %Status

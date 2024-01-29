@@ -99,4 +99,20 @@ ClassMethod RunClassMethod()
     set obj=$CLASSMETHOD("demo.example.main","%OpenId",1)
 }
 
+ClassMethod Tests()
+{
+    k x
+    d ..init(.x)
+    s y = 2
+    d Init(2)
+Init(Para)
+    w $g(x), !
+    w $g(Para), !
+}
+
+ClassMethod init(x)
+{
+    s x = 1
+}
+
 }

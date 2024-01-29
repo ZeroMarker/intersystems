@@ -1,4 +1,4 @@
-Class demo.Person Extends (%Persistent, %Library.Populate)
+Class demo.entity.Person Extends (%Persistent, %Library.Populate)
 {
 
 /// Planet
@@ -201,11 +201,11 @@ Storage Default
 <Value>Age</Value>
 </Value>
 </Data>
-<DataLocation>^demo.PersonD</DataLocation>
+<DataLocation>^demo.entity.PersonD</DataLocation>
 <DefaultData>PersonDefaultData</DefaultData>
-<IdLocation>^demo.PersonD</IdLocation>
-<IndexLocation>^demo.PersonI</IndexLocation>
-<StreamLocation>^demo.PersonS</StreamLocation>
+<IdLocation>^demo.entity.PersonD</IdLocation>
+<IndexLocation>^demo.entity.PersonI</IndexLocation>
+<StreamLocation>^demo.entity.PersonS</StreamLocation>
 <Type>%Storage.Persistent</Type>
 }
 

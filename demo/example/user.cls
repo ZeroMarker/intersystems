@@ -40,4 +40,42 @@ ClassMethod Interesting() [ Language = objectscript ]
     write !,"Your security roles: "_$ROLES
 }
 
+ClassMethod Transaction()
+{
+    Set tSC = $$$OK
+
+    Try {
+        // Start a new transaction
+        Set tSC = %SYS.Transaction.Start()
+        If $$$ISERR(tSC) {
+            // Handle error starting the transaction
+            Write "Error starting transaction: ", tSC, !
+            Quit
+        }
+
+        // Your transaction logic goes here
+
+        // Commit the transaction
+        Set tSC = %SYS.Transaction.Commit()
+        If $$$ISERR(tSC) {
+            // Handle error committing the transaction
+            Write "Error committing transaction: ", tSC, !
+        }
+    } Catch ex {
+        // Handle exception
+        Write "Exception: ", ex.Name, " - ", ex.Message, !
+        Set tSC = %SYS.Transaction.Rollback()
+    }
+
+    // Check for uncommitted transactions
+    Set status = %SYS.Transaction.Status()
+    If status = 1 {
+        Write "There are uncommitted transactions.", !
+    } ElseIf status = 0 {
+        Write "No uncommitted transactions.", !
+    } Else {
+        Write "Error checking transaction status.", !
+    }
+}
+
 }
