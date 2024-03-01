@@ -1,4 +1,4 @@
-Class demo.entity.Company Extends (%Persistent, %Populate) [ SqlTableName = Company ]
+Class demo.entity.Company Extends (%Persistent, %Populate, %XML.Adaptor) [ SqlTableName = Company ]
 {
 
 Property Name As %String [ Required ];

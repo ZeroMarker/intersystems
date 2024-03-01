@@ -35,4 +35,50 @@ Method Forecast(StockName As %String) As %Integer [ WebMethod ]
     Quit price
 }
 
+ClassMethod Post()
+{
+    Set httprequest = ##class(%Net.HttpRequest).%New()
+
+    // Set the target URL
+    Set httprequest.Server = "https://example.com/api/endpoint"
+
+    // Set the request method to POST
+    Set httprequest.HttpMethod = "POST"
+
+    // Insert form data
+    Set data("name") = "John Doe"
+    Set data("age") = 30
+    do httprequest.InsertFormData("gender","male")
+    Do httprequest.InsertFormData(.data)
+
+    // Execute the request
+    Set status = httprequest.Execute()
+
+    // Check for success
+    If $$$ISOK(status) {
+        Write "Request successful"
+        // Handle the response if needed
+        Set responseBody = httprequest.HttpResponse.Data
+        Write "Response: ", responseBody
+    } else {
+        Write "Request failed, status code: ", status
+        Write "Error: ", httprequest.HttpResponse.ReasonPhrase
+    }
+}
+
+ClassMethod Log()
+{
+    ; https://community.intersystems.com/post/zinvokeclient208soapwebclient1
+    set ^ISCSOAP("LogFile") = "/root/a.log"
+    Set ^ISCSOAP("Log")="ios"
+    /*
+    *   debug websevice
+    */
+    ; clear
+    Set ^ISCSOAP("Log")=""
+}
+}
+
+
+
 }

@@ -1,4 +1,6 @@
 ```objectscript
+set friends = $lb("Mark","Bob")
+set $list(friends,1) = "Alice"
 Set valueToCheck = "yourValue"
 Set array = "value1,value2,value3,value4"
 
