@@ -44,10 +44,6 @@ Method PrintCompany() As %Status
     write !, ..Name, " has actived in ", ..Industry, " for ", ..YearActived, " years."
     write !, "This company is at ", ..#COUNTRY 
 
-    // Macros
-    #define StringMacro "Hello, World!"
-    write !, $$$StringMacro
-
     return $$$OK
 }
 

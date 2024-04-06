@@ -100,4 +100,19 @@ ClassMethod ListPy() [ Language = python ]
         print(Colors.GetAt(i))
 }
 
+ClassMethod ListItem()
+{
+    s list = $lb(1, 4, 3)
+    s rtn = ""
+    s $p(rtn,"^",10) = 1
+    s json = {"code": true}
+    s json=  json.%ToJSON()
+    s json = {}.%FromJSON(json)
+    ;q json.code
+    ;q rtn
+    s str = "/\/\$#%&*!%(sssqq=="
+    q str
+    q $listfind(list,6)
+}
+
 }

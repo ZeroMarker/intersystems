@@ -77,8 +77,5 @@ ClassMethod Log()
     ; clear
     Set ^ISCSOAP("Log")=""
 }
-}
-
-
 
 }

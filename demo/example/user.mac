@@ -38,4 +38,4 @@ interesting() public {
     write !,"Your installed version: "_$ZVERSION
     write !,"Your username: "_$USERNAME
     write !,"Your security roles: "_$ROLES  
-    }
+}

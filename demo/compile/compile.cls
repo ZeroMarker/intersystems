@@ -1,33 +1,41 @@
 Class demo.compile.compile Extends %RegisteredObject
 {
 
-/// d ##class(demo.compile.compile).Compile()
+/**
+    * Compiles
+    * @param string package
+    * @param string class
+    * @return void
+*/
 ClassMethod Compile()
 {
     // compile
     // Do $system.OBJ.ShowFlags()
     d $System.OBJ.Compile("test.cls")
     d $System.OBJ.CompileList("test.mac")
-    // have problem
+
     d ##class(%Routine).CompileList("test.mac")
 }
 
 ClassMethod Exist()
 {
-    s rtn = ##class(%Dictionary.MethodDefinition).%ExistsId("web.DHCARCOrdSets||CheckPresno")
-
-    s rtn = ##class(%Dictionary.CompiledMethod).%ExistsId("web.DHCDocInterfaceMethod||DHCDocHisInterface")
+    s rtn1 = ##class(%Dictionary.MethodDefinition).%ExistsId("demo.compile.compile||Compile")
+    s rtn2 = ##class(%Dictionary.CompiledMethod).%ExistsId("demo.compile.compile||Compile")
+    q $lb(rtn1, rtn2)
 }
 
 ClassMethod GetInfo(Package, Class)
 {
-    Set className = "demo.entity.Student"
+    Set className = "demo.entity.Person"
 
     ; Get class information
     Set classInfo = ##class(%Dictionary.ClassDefinition).%OpenId(className)
 
     ; Check if the class exists
     If $IsObject(classInfo) {
+        
+        w "Class Type:", !
+        w classInfo.ClassType, !
         ; Get properties
         Write "Properties:", !
         For i = 1:1:classInfo.Properties.Count() {
@@ -45,15 +53,13 @@ ClassMethod GetInfo(Package, Class)
         Write "Methods:",!
         For i = 1:1:classInfo.Methods.Count() {
             Set methodName = classInfo.Methods.GetAt(i).Name
-            Write methodName, !
-            Set methodName = classInfo.Methods.GetAt(i).Name
             Write "Method: ", methodName, !
 
             ; Get method information
             Set methodInfo = classInfo.Methods.GetAt(i)
-
+            /*
             ; Check if the method exists
-            /*If $IsObject(methodInfo) {
+            If $IsObject(methodInfo) {
                 ; Print parameters for the method
                 Write "  Parameters:", !
                 For j = 1:1:methodInfo.Parameters.Count() {
@@ -66,64 +72,62 @@ ClassMethod GetInfo(Package, Class)
 
             Write ! ; Add a newline for better readability
         }
-
-        ; Loop through all indices
-        For i = 1:1:classInfo.IndexCount() {
-            Set indexInfo = classInfo.GetIndex(i)
-            If $IsObject(indexInfo) {
-                Write "Index Name: ", indexInfo.Name, !
-                Write "Type: ", indexInfo.Type, !
-                Write "Properties:", !
-                For j = 1:1:indexInfo.Properties.Count() {
-                    Set propertyName = indexInfo.Properties.GetAt(j).Name
-                    Write "  ", propertyName
-                }
-                Write ! ; Add a newline for better readability
-            } Else {
-                Write "Index not found at position ", i, !
+        w "Indices:", !
+        Set indexList = classInfo.IndicesGet()
+        if $ISOBJECT(indexList) {
+            For i = 1:1:indexList.Count() {
+                Set indexName = indexList.GetAt(i).Name
+                Write "Index: ", indexName
+                w !
+            }
+        }
+        
+        w "Queries:", !
+        set QueryList = classInfo.QueriesGet()
+        if $ISOBJECT(QueryList) {
+            For i = 1:1:QueryList.Count() {
+                Set QueryName = QueryList.GetAt(i).Name
+                Write "Query: ", QueryName
+                w !
             }
         }
 
     } Else {
         Write "Class not found: ", className, !
     }
+    q 0
+}
 
-    
+ClassMethod ClassMethod()
+{
+    q $CLASSMETHOD("demo.compile.compile","GetInfo")
+}
+
+ClassMethod NameSpace()
+{
+    zn "HSLIB"
+    new $NAMESPACE
+    set $NAMESPACE = "User"
+    q $zv
+}
+
+ClassMethod Symbol()
+{
     w "Hello", !, !
-    q "Hello"_$c(13,10)
-}
-
-ClassMethod Test()
-{
-    s ^Student("Code", "01",1) = ""
-    s ^Student("Code", "02",3) = ""
-    s ^Student("Code", "04",5) = ""
-    s code = "04"
-    s stu = $o(^Student("Code", code, 0))
-    q $CLASSMETHOD("demo.tools","For")
-    q stu
-}
-
-ClassMethod For()
-{
-    s ^StudentI("Code", "02",1) = ""
-    s ^StudentI("Code", "02",3) = ""
-    s ^StudentI("Code", "02",5) = ""
-    s ^StudentD(1) = "1^Y"
-    s ^StudentD(3) = "3^N"
-    s ^StudentD(5) = "5^N"
-    s code = "02"
-    s id = ""
-    s ret = ""
-    for {
-        s id = $o(^StudentI("Code",code,id))
-        q:id=""
-        s flag = $p(^StudentD(id),"^",2)
-        continue:flag'="N"
-        s:$g(ret)'="" ret = ret_","
-        s ret = $g(ret)_flag
+    w "Hello"_$c(13,10)
+    s x = 1, y = 0
+    if (x = 1 ! y = 0) {
+        w "Hello"
     }
-    q ret
+    q 0
+}
+
+ClassMethod Macro()
+{
+    // Macros
+    #define StringMacro "Hello, World!"
+    write !, $$$StringMacro, !
+    q 0
 }
 
 }

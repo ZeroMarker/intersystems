@@ -1,4 +1,4 @@
-Class demo.sql.lock Extends %RegisteredObject
+Class demo.function.lock Extends %RegisteredObject
 {
 
 ClassMethod lock()

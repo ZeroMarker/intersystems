@@ -10,13 +10,12 @@ docker pull intersystems/irishealth-community:latest-preview
 
 docker run -d -p 52773:52773 --init --name iris intersystems/irishealth-community:latest-preview
 ```
-## Firewall allow 52773/TCP
 
-## Then open Management portal in your host browser on:
+## Portal Address
 
 http://207.148.28.9:52773/csp/sys/UtilHome.csp
 
-## Or open a terminal to IRIS:
+## IRIS Terminal
 ```sh
 # terminal
 docker exec -it iris iris terminal IRIS

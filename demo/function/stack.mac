@@ -1,0 +1,30 @@
+ROUTINE demo.function.stack
+STA
+  WRITE !,"Context level in routine STA = ",$STACK
+  DO A
+  WRITE !,"Context level after routine A = ",$STACK
+  QUIT
+A
+  WRITE !,"Context level in routine A = ",$STACK
+  DO B
+  WRITE !, "Context level after routine B = ",$STACK
+  QUIT
+B
+  WRITE !,"Context level in routine B = ",$STACK
+  XECUTE "WRITE !,""Context level in XECUTE = "",$STACK" 
+  WRITE !,"Context level after XECUTE = ",$STACK
+  QUIT
+
+STAC  ;
+      SET $ECODE=""
+      XECUTE "DO First"
+      QUIT
+First SET varSecond=$$Second()
+      QUIT
+Second()  FOR loop=0:1:$STACK(-1) { 
+          WRITE !,"Context level:",loop,?25,"Context type: ",$STACK(loop)
+          WRITE !,?5,"Current place: ",$STACK(loop,"PLACE")
+          WRITE !,?5,"Current source: ",$STACK(loop,"MCODE")
+          WRITE ! }
+          zw $STACK
+      QUIT 1
