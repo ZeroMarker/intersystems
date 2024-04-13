@@ -57,19 +57,6 @@ ClassMethod GetInfo(Package, Class)
 
             ; Get method information
             Set methodInfo = classInfo.Methods.GetAt(i)
-            /*
-            ; Check if the method exists
-            If $IsObject(methodInfo) {
-                ; Print parameters for the method
-                Write "  Parameters:", !
-                For j = 1:1:methodInfo.Parameters.Count() {
-                    Set paramName = methodInfo.Parameters.GetAt(j).Name
-                    Write "    ", paramName
-                }
-            } Else {
-                Write "    Method not found: ", methodName
-            }*/
-
             Write ! ; Add a newline for better readability
         }
         w "Indices:", !
