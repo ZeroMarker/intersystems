@@ -59,9 +59,14 @@ ClassMethod Process(obj)
     // 将新创建的元素添加到 screenInfo 数组中
     Do json.screenInfo.%Push(screenInfoItem)
 
+    Set json."code_d" = "sss"
+    
+    Set first = json.%Get(0)
+    Set name = first.patientName
+    
     // 打印 JSON 对象
     ZWrite json
-
+    
     ;q obj
 }
 
@@ -87,17 +92,17 @@ ClassMethod Parse()
 
     // Convert the array to a JSON string
     Set jsonString = ##class(%ZEN.Auxiliary.jsonProvider).%ObjectToJSON(jsonArray)
-    zWrite jsonString
+    ZWrite jsonString
 
-    set array = []
-    do array.%Set(array.%Size(), 123).%Set(array.%Size(), 456)
-    write "removed "_array.%Remove(array.%Size()-1)_", leaving "_array.%ToJSON()
+    Set array = []
+    Do array.%Set(array.%Size(), 123).%Set(array.%Size(), 456)
+    Write "removed "_array.%Remove(array.%Size()-1)_", leaving "_array.%ToJSON()
 
         //removed 456, leaving [123]
 
-    set array = []
-    do array.%Push(123).%Push(456)
-    write "removed "_array.%Pop()_", leaving "_array.%ToJSON()
+    Set array = []
+    Do array.%Push(123).%Push(456)
+    Write "removed "_array.%Pop()_", leaving "_array.%ToJSON()
 
     //456, leaving [123]
 }
@@ -105,53 +110,53 @@ ClassMethod Parse()
 /// w ##class(web.DHCDocMain).GetOrderChronicDiagJson(412,92)
 ClassMethod GetOrderChronicDiagJson(EpisodeID As %String, OrderBillTypeRowid As %String) As %String
 {
-    s $ZT="GetOrderChronicDiagStrErr"
-    q:EpisodeID="" ""
-    s BillTypeObj = ##class(demo.Company).%OpenId(OrderBillTypeRowid)
-    q:BillTypeObj="" ""
-    q:(BillTypeObj.READateTo<+$h)&&(BillTypeObj.READateTo'="") ""
-    s BillTypeDesc = BillTypeObj.READesc
-    q:BillTypeDesc'["慢病" ""
-    s EpisodeObj = ##class(demo.Company).%OpenId(EpisodeID)
-    q:EpisodeObj="" ""
-    s PatObj = ##class(demo.Company).%OpenId(EpisodeObj.PAADMPAPMIDR.%Id())
-    q:PatObj="" ""
-    s PatDiagsStr = PatObj.PAPMIChronic
+    Set $ZTRAP="GetOrderChronicDiagStrErr"
+    Quit:EpisodeID="" ""
+    Set BillTypeObj = ##class(demo.Company).%OpenId(OrderBillTypeRowid)
+    Quit:BillTypeObj="" ""
+    Quit:(BillTypeObj.READateTo<+$HOROLOG)&&(BillTypeObj.READateTo'="") ""
+    Set BillTypeDesc = BillTypeObj.READesc
+    Quit:BillTypeDesc'["慢病" ""
+    Set EpisodeObj = ##class(demo.Company).%OpenId(EpisodeID)
+    Quit:EpisodeObj="" ""
+    Set PatObj = ##class(demo.Company).%OpenId(EpisodeObj.PAADMPAPMIDR.%Id())
+    Quit:PatObj="" ""
+    Set PatDiagsStr = PatObj.PAPMIChronic
     
-    if (PatDiagsStr=""){
-        q ""
+    If (PatDiagsStr=""){
+        Quit ""
     }
-    s Json=[]
-    for i=1:1:$L(PatDiagsStr,"/"){
-        s OnePatDiagsStr=$P(PatDiagsStr,"/",i)
-        q:OnePatDiagsStr=""
-        s OneChronicDiagCode=$P(OnePatDiagsStr,"#m",2)
-        s OneChronicDiagDesc=$P(OnePatDiagsStr,"#m",1)
-        s Item = {}
-        s Item.Code = OneChronicDiagCode
-        s Item.Desc = OneChronicDiagDesc
-        d Json.%Push(Item)
+    Set Json=[]
+    For i=1:1:$LENGTH(PatDiagsStr,"/"){
+        Set OnePatDiagsStr=$PIECE(PatDiagsStr,"/",i)
+        Quit:OnePatDiagsStr=""
+        Set OneChronicDiagCode=$PIECE(OnePatDiagsStr,"#m",2)
+        Set OneChronicDiagDesc=$PIECE(OnePatDiagsStr,"#m",1)
+        Set Item = {}
+        Set Item.Code = OneChronicDiagCode
+        Set Item.Desc = OneChronicDiagDesc
+        Do Json.%Push(Item)
     }
-    s Json = Json.%ToJSON()
-    q Json
+    Set Json = Json.%ToJSON()
+    Quit Json
 GetOrderChronicDiagStrErr
-    Q ""
+    Quit ""
 }
 
 ClassMethod Len()
 {
-    set myArray = []
-    set myArray = ["apple", "banana", "orange"]
+    Set myArray = []
+    Set myArray = ["apple", "banana", "orange"]
     /*for i=1:1:10 {
         s item = {}
         s item.Code = i
         s item.Desc = i + 1
         do myArray.%Push(item)
     }*/
-    zw myArray
-    set elementCount = myArray.%Size()
+    ZWrite myArray
+    Set elementCount = myArray.%Size()
     ;write "Number of elements in array: ", elementCount
-    q elementCount
+    Quit elementCount
 }
 
 }

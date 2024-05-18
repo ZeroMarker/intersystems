@@ -95,6 +95,11 @@ ClassMethod ToString()
     
     set status=writer.Element("Name")
     set status=writer.WriteChars(name)
+    /*
+    set status=writer.Element("Name")
+    set status=writer.WriteChars(name)
+    set status=writer.EndElement()
+    */
     set status=writer.EndElement()
     
     set status=writer.Element("Age")
