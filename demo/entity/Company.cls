@@ -30,7 +30,7 @@ ClassMethod FindCompanyByName(companyName As %String) As %List
     set companies = ##class(%ListOfObjects).%New()
     
     while (result.%Next()) {
-        set company = ##class(demo.Company).%OpenId(result.ID)
+        set company = ##class(demo.entity.Company).%OpenId(result.ID)
         d companies.InsertObject(company)
     }
     

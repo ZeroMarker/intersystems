@@ -160,6 +160,8 @@ ClassMethod ObjectAddData(StCode As %String, StName As %String, StSexDR As %Stri
     if (StDob'="") {
         s StDob = $ZD(StDob)
     }
+    s result = 1
+    /*
     s oref=##class(demo.Student).%New()
     if (oref) {
         s oref.StCode = StCode
@@ -178,6 +180,8 @@ ClassMethod ObjectAddData(StCode As %String, StName As %String, StSexDR As %Stri
             s result = "新增失败"_$system.OBJ.DisplayError(sc)
         }
     }
+
+    */
     ;d oref.%Close() 
     /*
     This method is deprecated because we now reference count objects automatically so there is no need to call this method. It is a no-op and just returns success %Status code.

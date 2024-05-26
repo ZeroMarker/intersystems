@@ -9,4 +9,9 @@ ClassMethod sql() [ Language = python ]
         print(row)
 }
 
+ClassMethod print() [ Language = python ]
+{
+    print("Hello World!")
+}
+
 }

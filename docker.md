@@ -6,9 +6,9 @@ sudo sh get-docker.sh
 
 ## run iris
 ```sh
-docker pull intersystems/irishealth-community:latest-preview
+docker pull intersystems/irishealth-community:latest-em
 
-docker run -d -p 52773:52773 --init --name iris intersystems/irishealth-community:latest-preview
+docker run -d -p 52773:52773 --init --name iris intersystems/irishealth-community:latest-em
 ```
 
 ## Portal Address
