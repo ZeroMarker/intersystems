@@ -114,58 +114,41 @@ ClassMethod init(x)
 {
     s x = 1
 }
-/// w ##class(web.DHCDocMain).Comm("OEORD",2,1,"I",1,1)
-ClassMethod Comm(global As %String, piece As %Integer, ByRef nodes...) As %String
+/// 获取Global中的值
+/// 兼容$piece, $order
+/// "order" 获取 $o
+/// "value"	获取 $p
+/// s Arcim = $p($g(^OEORD(1,"I",1,1)),"^",2)
+/// s Arcim = ##class(web.DHCDocMain).Comm("value","OEORD",2,1,"I",1,1)
+/// s Arcim = $p($g(^OEORD(ord,"I",item,1)),"^",2)
+/// s Arcim = ##class(web.DHCDocMain).Comm("value","OEORD",2,ord,"I",item,1)
+/// -------------------------------
+/// s item=$o(^OEORD(ord,"I",item))
+/// s item=##class(web.DHCDocMain).Comm("order","OEORD",1,ord,"I",item)
+/// -------------------------------
+/// (type类型, global名称, piece位置, nodes节点列表)
+/// debug: w ##class(web.DHCDocMain).Comm("value","OEORD",2,1,"I",1,1)
+/// debug: w ##class(web.DHCDocMain).Comm("order","OEORD",1,1,"I",1)
+ClassMethod Comm(type As %String, global As %String, piece As %Integer, ByRef nodes...) As %String
 {
-    /*
-	s @"global" = "OEORD"
-	s @"node" = "I"
-	s @"de" = "^"
-	;s exe = "rtn=$p(^OEORD(1,node,1,1),de,2)"
-	s exe = "rtn=$p($g(^"_global_"(1,"""_node_""",1,1)),""^"",2)"
-	s @exe
-	q $g(rtn)
-	*/
-	/*
-	// 设置全局变量
-    s global = "OEORD"
-    s node = "I"
-
-    // 调试输出：打印全局变量
-    w !,"Global: ", global
-    w !,"Node: ", node
-
-    // 构建执行字符串
-    s exe = "s rtn=$p($g(^"_global_"(1,"""_node_""",1,1)),""^"",2)"
-    
-    // 调试输出：打印执行字符串
-    w !,"Executable: ", exe
-
-    // 执行字符串
-    x exe
-    ;s @exe
-    s rtn = @"rtn"
-    
-    // 调试输出：打印结果
-    w !,"Result: ", $g(rtn)
-	
-	
-    // 返回结果
-    q $g(rtn)
-    */
     // 构建全局变量位置
     s location = "^"_global
     s nodeString = ""
+    
     // 遍历节点参数并构建位置字符串
     f i=1:1:nodes {
         s nodeString = nodeString_","""_nodes(i)_""""
     }
     
     // 构建最终的全局变量引用
-    s location = "$g(" _ location_"("_$e(nodeString,2,*)_")" _")"
-    
+    if type = "value" {
+    	s location = "$g(" _ location_"("_$e(nodeString,2,*)_")" _")"
+    }
+    if type = "order" {
+    	s location = "$o(" _ location_"("_$e(nodeString,2,*)_")" _")"
+    }
+
     // 提取值
-    ;s value = $g(@location)
     s exe = "s rtn = " _ location
     x exe
     s value = @"rtn"
@@ -173,13 +156,33 @@ ClassMethod Comm(global As %String, piece As %Integer, ByRef nodes...) As %Strin
     // 从值中提取指定部分
     s rtn = $p(value, "^", piece)
     
-    // 输出调试信息
-    ;w !,"Global: ", global
-    ;w !,"Piece: ", piece
-    ;w !,"Nodes: ", $zh(nodes)
-    ;w !,"Location: ", location
-    ;w !,"Value: ", value
-    ;w !,"Result: ", rtn
+    // 返回结果
+    q rtn
+}
+/// debug: w ##class(web.DHCDocMain).Call("web.DHCDocMain","Call","web.DHCDocMain","Call","web.DHCDocMain","Comm","value","OEORD",2,1,"I",1,1)
+/// debug: w ##class(web.DHCDocMain).Call("web.DHCDocMain","Comm","value","OEORD",2,1,"I",1,1)
+ClassMethod Call(class As %String, method As %String, ByRef nodes...) As %String
+{
+    // 构建全局变量位置
+    s location = "##class("_class_")."_method
+    s nodeString = ""
+    
+    // 遍历节点参数并构建位置字符串
+    f i=1:1:nodes {
+        s nodeString = nodeString_","""_nodes(i)_""""
+    }
+    
+   
+    s location = location_"("_$e(nodeString,2,*)_")"
+    
+
+    // 提取值
+    s exe = "s rtn = " _ location
+    x exe
+    s value = @"rtn"
+    
+    // 从值中提取指定部分
+    s rtn = value
     
     // 返回结果
     q rtn
