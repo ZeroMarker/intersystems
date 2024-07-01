@@ -1,3 +1,5 @@
+[Operators and Expressions](https://docs.intersystems.com/latest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_operators)
+
 # Type Cast
 - + cast to numberic
 
@@ -14,4 +16,5 @@
 - || or
 - ' not
 - , and
+
 
