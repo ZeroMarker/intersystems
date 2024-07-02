@@ -1,4 +1,4 @@
-ROUTINE demo.routine.First
+ROUTINE demo.First
 hello(a, b) public {
     set sum =  a + b
     w sum, !
@@ -6,9 +6,50 @@ hello(a, b) public {
     return sum
 }
 
+demoexampleuser ;
+ ; this is demoroutine 
+ write "Use one of the following entry points:"
+ write !,"random"
+ write !,"input"
+ write !,"interesting"
+ quit 
+ 
+ //this procedure can be called from outside the routine
+random() public {
+    set rand=$RANDOM(10)+1        ; rand is an integer in the range 1-10
+    write "Your random number: "_rand
+    set name=$$getnumbername(rand)
+    write !, "Name of this number: "_name
+ }
+
+ //this procedure can be called from outside the routine
+input() public {
+    read "Enter a number from 1 to 10: ", input
+    set name=$$getnumbername(input)
+    write !, "Name of this number: "_name
+ }
+ 
+ //this procedure can be called only from within this routine
+getnumbername(number) {
+    set name=$CASE(number,1:"one",2:"two",3:"three",
+        4:"four",5:"five",6:"six",7:"seven",8:"eight",
+        9:"nine",10:"ten",:"other")
+    quit name
+}
+
+ /* write some interesting values
+ this procedure can be called from outside the routine
+ */
+interesting() public {
+    write "Today's date: "_$ZDATE($HOROLOG,3)
+    write !,"Your installed version: "_$ZVERSION
+    write !,"Your username: "_$USERNAME
+    write !,"Your security roles: "_$ROLES  
+}
 ///d hello^demo.First
 ///w $$hello^demo.First
 ///w hello^demo.First(1)
 
+/// hello^demo.routine.First
 /// $$ALPHAUP
 

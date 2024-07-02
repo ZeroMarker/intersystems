@@ -11,6 +11,7 @@ ClassMethod Json()
     Do jsonObject.%Set("name", name)
     Do jsonObject.%Set("age", age)
     Do jsonObject.%Set("gender", gender)
+    s jsonObject."father_in_law" = 13
     Set obj = ..Process(jsonObject)
 
     Write obj.%Get("name"), !
@@ -58,89 +59,15 @@ ClassMethod Process(obj)
 
     // 将新创建的元素添加到 screenInfo 数组中
     Do json.screenInfo.%Push(screenInfoItem)
-
+    ;b ;;;;
     Set json."code_d" = "sss"
     
-    Set first = json.%Get(0)
-    Set name = first.patientName
+    ;Set first = json.%Get(0)
+    ;Set name = first.patientName
     
     // 打印 JSON 对象
-    ZWrite json
     
-    ;q obj
-}
-
-ClassMethod Parse()
-{
-    Set json = {}.%FromJSON("{""status"":0,""desc"":""操作成功"",""data"":null}")
-    ZWrite json
-    ; array
-    /*For index=1:1:json.%Size() {
-        Set person = json.Get(index)
-        Set name = person.name
-    }*/
-    // Create an array of objects
-    Set jsonArray = []
-    Set obj1 = {"name":"John", "age":30}
-    Set obj2 = {"name":"Jane", "age":25}
-    Set obj3 = {"name":"Bob", "age":35}
-
-    // Add objects to the array
-    Do jsonArray.%Push(obj1)
-    Do jsonArray.%Push(obj2)
-    Do jsonArray.%Push(obj3)
-
-    // Convert the array to a JSON string
-    Set jsonString = ##class(%ZEN.Auxiliary.jsonProvider).%ObjectToJSON(jsonArray)
-    ZWrite jsonString
-
-    Set array = []
-    Do array.%Set(array.%Size(), 123).%Set(array.%Size(), 456)
-    Write "removed "_array.%Remove(array.%Size()-1)_", leaving "_array.%ToJSON()
-
-        //removed 456, leaving [123]
-
-    Set array = []
-    Do array.%Push(123).%Push(456)
-    Write "removed "_array.%Pop()_", leaving "_array.%ToJSON()
-
-    //456, leaving [123]
-}
-
-/// w ##class(web.DHCDocMain).GetOrderChronicDiagJson(412,92)
-ClassMethod GetOrderChronicDiagJson(EpisodeID As %String, OrderBillTypeRowid As %String) As %String
-{
-    Set $ZTRAP="GetOrderChronicDiagStrErr"
-    Quit:EpisodeID="" ""
-    Set BillTypeObj = ##class(demo.Company).%OpenId(OrderBillTypeRowid)
-    Quit:BillTypeObj="" ""
-    Quit:(BillTypeObj.READateTo<+$HOROLOG)&&(BillTypeObj.READateTo'="") ""
-    Set BillTypeDesc = BillTypeObj.READesc
-    Quit:BillTypeDesc'["慢病" ""
-    Set EpisodeObj = ##class(demo.Company).%OpenId(EpisodeID)
-    Quit:EpisodeObj="" ""
-    Set PatObj = ##class(demo.Company).%OpenId(EpisodeObj.PAADMPAPMIDR.%Id())
-    Quit:PatObj="" ""
-    Set PatDiagsStr = PatObj.PAPMIChronic
-    
-    If (PatDiagsStr=""){
-        Quit ""
-    }
-    Set Json=[]
-    For i=1:1:$LENGTH(PatDiagsStr,"/"){
-        Set OnePatDiagsStr=$PIECE(PatDiagsStr,"/",i)
-        Quit:OnePatDiagsStr=""
-        Set OneChronicDiagCode=$PIECE(OnePatDiagsStr,"#m",2)
-        Set OneChronicDiagDesc=$PIECE(OnePatDiagsStr,"#m",1)
-        Set Item = {}
-        Set Item.Code = OneChronicDiagCode
-        Set Item.Desc = OneChronicDiagDesc
-        Do Json.%Push(Item)
-    }
-    Set Json = Json.%ToJSON()
-    Quit Json
-GetOrderChronicDiagStrErr
-    Quit ""
+    q json
 }
 
 ClassMethod Len()

@@ -2,3 +2,21 @@
 -	进程Global, ^||a
 -	Global, ^a
 -	特殊变量
+$HOROLOG
+$JOB
+$NAMESPACE
+$TLEVEL
+$USERNAME
+$ZHOROLOG
+$ZJOB
+$ZPI
+$ZTIMESTAMP
+$ZTIMEZONE
+$ZVERSION
+
+$ZERROR
+
+%msg
+%ROWID
+
+SQLCODE

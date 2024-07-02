@@ -6,5 +6,3 @@ $select
 $case
 $justify
 $fnumber
-$listget
-$listbuild

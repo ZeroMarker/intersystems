@@ -18,12 +18,6 @@ quit
 
 merge ^a(1)=^g(1,2)
 
-tstart
-
-tcommit
-
-trollback
-
 zwrite
 
 zn

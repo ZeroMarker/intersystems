@@ -1,1 +1,0 @@
-s ^ttttllll = $g(^ttttllll)_$lb(ASRowId,ClinicGroupId)

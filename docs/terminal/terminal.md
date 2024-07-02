@@ -2,7 +2,7 @@ clear screen, write #
 
 !ls     **external command**
 
-halt, quit
+halt
 
 w $system.Process.BreakMode(0)
 ignore BREAKs

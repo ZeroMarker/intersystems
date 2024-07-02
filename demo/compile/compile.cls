@@ -17,13 +17,6 @@ ClassMethod Compile()
     d ##class(%Routine).CompileList("test.mac")
 }
 
-ClassMethod Exist()
-{
-    s rtn1 = ##class(%Dictionary.MethodDefinition).%ExistsId("demo.compile.compile||Compile")
-    s rtn2 = ##class(%Dictionary.CompiledMethod).%ExistsId("demo.compile.compile||Compile")
-    q $lb(rtn1, rtn2)
-}
-
 ClassMethod GetInfo(Package, Class)
 {
     Set className = "demo.entity.Person"
@@ -88,14 +81,6 @@ ClassMethod GetInfo(Package, Class)
 ClassMethod ClassMethod()
 {
     q $CLASSMETHOD("demo.compile.compile","GetInfo")
-}
-
-ClassMethod NameSpace()
-{
-    zn "HSLIB"
-    new $NAMESPACE
-    set $NAMESPACE = "User"
-    q $zv
 }
 
 ClassMethod Symbol()

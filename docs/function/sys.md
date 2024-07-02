@@ -1,1 +1,0 @@
-$classmethod(class, method)

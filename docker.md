@@ -12,8 +12,10 @@ docker run -d -p 52773:52773 --init --name iris intersystems/irishealth-communit
 ```
 
 ## Portal Address
-
+```
+change password
 http://207.148.28.9:52773/csp/sys/UtilHome.csp
+```
 
 ## IRIS Terminal
 ```sh
@@ -37,3 +39,4 @@ docker run --name iris -d --publish 1972:1972 --publish 52773:52773 containers.i
 ```sh
 https://ominous-space-tribble-j99pq5wr7435774-52773.app.github.dev/csp/sys/UtilHome.csp
 ```
+

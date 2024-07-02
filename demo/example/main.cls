@@ -23,10 +23,17 @@ ClassMethod Match() As %Status
     Write testthis ?3N1"-"2N1"-"4N
 }
 
-Method Hello() [ Language = python ]
+ClassMethod ValidateTime(time As %String) As %Boolean
 {
-    # implementation details written in Python
-    print("Hello World!")
+    // Regular expression pattern for hh:mm format
+    Set pattern = "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+    
+    // Use $Match to check if the time string matches the pattern
+    If $Match(time, pattern) {
+        Return 1  // Valid time format
+    } Else {
+        Return 0  // Invalid time format
+    }
 }
 
 ClassMethod AddressWrapper() As %String [ Language = objectscript ]
@@ -147,7 +154,6 @@ ClassMethod Comm(type As %String, global As %String, piece As %Integer, ByRef no
     if type = "order" {
     	s location = "$o(" _ location_"("_$e(nodeString,2,*)_")" _")"
     }
-
     // 提取值
     s exe = "s rtn = " _ location
     x exe
@@ -172,10 +178,8 @@ ClassMethod Call(class As %String, method As %String, ByRef nodes...) As %String
         s nodeString = nodeString_","""_nodes(i)_""""
     }
     
-   
     s location = location_"("_$e(nodeString,2,*)_")"
     
-
     // 提取值
     s exe = "s rtn = " _ location
     x exe
@@ -187,4 +191,42 @@ ClassMethod Call(class As %String, method As %String, ByRef nodes...) As %String
     // 返回结果
     q rtn
 }
+
+ClassMethod Stack()
+{
+	;add by gry V8.4
+	s PLACE="",MCODE=""
+	kill tmpStackAry
+	s levelDeep=$STACK(-1)
+	FOR loop=0:1:levelDeep { 
+		s tp=$STACK(loop)
+		continue:(tp="")||(tp="XECUTE")
+		s cp=$STACK(loop,"PLACE")
+		continue:(cp="")||(cp["%SYS")||(cp["%CSP")
+		s stackCls=$p($p(cp,"^",2)," ",1)
+		continue:$p($p(cp,"^",2)," ",1)=$zn
+		;s cs=$STACK(loop,"MCODE")
+		i stackCls'="" {
+			continue:$d(tmpStackAry(stackCls))
+			s tmpStackAry(stackCls)=""
+		}
+		;调用的标准插医嘱程序,则后续不记录
+		s stackMthName=$p(cp,"+",1)
+		i ((stackMthName="zInsertOrderItem")||(stackMthName="zSaveOrderItems"))&&(cp["web.DHCOEOrdItem") {
+			s cp="标准"_stackMthName
+			i PLACE="" s PLACE=$tr(cp,"^",",")
+			e  s PLACE=PLACE_"!!"_$tr(cp,"^",",")
+			quit
+		}else{
+			i PLACE="" s PLACE=$tr(cp,"^",",")
+			e  s PLACE=PLACE_"!!"_$tr(cp,"^",",")
+		}
+		;s ^tmpgry("stack",+$h,$i(^tmpgry))=tp_","_cp ;_","_cs
+    }
+    ;只获取600长度的堆栈信息
+    s PlaceLen=$l(PLACE)
+    i PlaceLen>600 s PLACE=$e(PLACE,1,600)
+	q PLACE
+}
+
 }
