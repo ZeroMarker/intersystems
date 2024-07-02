@@ -24,12 +24,8 @@ ClassMethod NameSpace()
     q $zv
 }
 
-ClassMethod Routine(a As %String, b As %String) As %Status
+ClassMethod RunClassMethod()
 {
-    Set sc = $$$OK
-    // do something
-    d hello^demo.First(a,b)
-    Return sc
+    set obj=$CLASSMETHOD("demo.example.main","%OpenId",1)
 }
-
 }

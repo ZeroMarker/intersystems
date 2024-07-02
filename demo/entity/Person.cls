@@ -26,20 +26,6 @@ ClassMethod DQuery()
     WRITE !,"End of data"
 }
 
-ClassMethod InQuery()
-{
-    &sql(SELECT COUNT(*) INTO :myvar FROM demo.Person)
-    IF SQLCODE<0 {
-        WRITE "SQLCODE error ",SQLCODE," ",%msg  
-        QUIT
-    }
-    ELSEIF SQLCODE=100 {
-        WRITE "Query returns no results"  
-        QUIT
-    }
-    WRITE myvar
-}
-
 /// Others: d ##class(Demo.Person).GetPatientBirthday(3)
 ClassMethod GetPatientBirthday(RowId As %String) As %String
 {

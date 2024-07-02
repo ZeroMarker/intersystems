@@ -1,7 +1,7 @@
--	普通变量, a
--	进程Global, ^||a
--	Global, ^a
--	特殊变量
+-	a
+-	^||a
+-	^a
+-	$h
 
 $HOROLOG
 $JOB
@@ -14,14 +14,11 @@ $ZPI
 $ZTIMESTAMP
 $ZTIMEZONE
 $ZVERSION
-
 $ZERROR
 
 %msg
 %ROWID
-
 SQLCODE
-
 
 SET $NAMESPACE="USER"
 SET ^GBL(1)="test"

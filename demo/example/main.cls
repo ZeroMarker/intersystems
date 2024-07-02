@@ -17,24 +17,6 @@ ClassMethod Square(input As %Integer) As %Integer
     return answer
 }
 
-ClassMethod Match() As %Status
-{
-    Set testthis="333-99-0000"
-    Write testthis ?3N1"-"2N1"-"4N
-}
-
-ClassMethod ValidateTime(time As %String) As %Boolean
-{
-    // Regular expression pattern for hh:mm format
-    Set pattern = "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
-    
-    // Use $Match to check if the time string matches the pattern
-    If $Match(time, pattern) {
-        Return 1  // Valid time format
-    } Else {
-        Return 0  // Invalid time format
-    }
-}
 
 ClassMethod AddressWrapper() As %String [ Language = objectscript ]
 {
@@ -101,10 +83,7 @@ ClassMethod MultiArgPy(Arg1... As %List) [ Language = python ]
         print("Argument[" + str(i+1) + "]: " + str(Arg1[i]))
 }
 
-ClassMethod RunClassMethod()
-{
-    set obj=$CLASSMETHOD("demo.example.main","%OpenId",1)
-}
+
 
 ClassMethod Tests()
 {
@@ -121,10 +100,12 @@ ClassMethod init(x)
 {
     s x = 1
 }
+
 /// 获取Global中的值
-/// 兼容$piece, $order
+/// 兼容$piece, $order, $listget
 /// "order" 获取 $o
 /// "value"	获取 $p
+/// --------------
 /// s Arcim = $p($g(^OEORD(1,"I",1,1)),"^",2)
 /// s Arcim = ##class(web.DHCDocMain).Comm("value","OEORD",2,1,"I",1,1)
 /// s Arcim = $p($g(^OEORD(ord,"I",item,1)),"^",2)
@@ -136,6 +117,7 @@ ClassMethod init(x)
 /// (type类型, global名称, piece位置, nodes节点列表)
 /// debug: w ##class(web.DHCDocMain).Comm("value","OEORD",2,1,"I",1,1)
 /// debug: w ##class(web.DHCDocMain).Comm("order","OEORD",1,1,"I",1)
+/// debug: w ##class(web.DHCDocMain).Comm("value list","User.DHCRegistrationFeeD",7,11)
 ClassMethod Comm(type As %String, global As %String, piece As %Integer, ByRef nodes...) As %String
 {
     // 构建全局变量位置
@@ -148,12 +130,13 @@ ClassMethod Comm(type As %String, global As %String, piece As %Integer, ByRef no
     }
     
     // 构建最终的全局变量引用
-    if type = "value" {
+    if type [ "value" {
     	s location = "$g(" _ location_"("_$e(nodeString,2,*)_")" _")"
     }
     if type = "order" {
     	s location = "$o(" _ location_"("_$e(nodeString,2,*)_")" _")"
     }
+
     // 提取值
     s exe = "s rtn = " _ location
     x exe
@@ -161,10 +144,14 @@ ClassMethod Comm(type As %String, global As %String, piece As %Integer, ByRef no
     
     // 从值中提取指定部分
     s rtn = $p(value, "^", piece)
-    
+    if type = "value list" {
+	    s rtn = $lg(value,piece)
+	}
+	
     // 返回结果
     q rtn
 }
+
 /// debug: w ##class(web.DHCDocMain).Call("web.DHCDocMain","Call","web.DHCDocMain","Call","web.DHCDocMain","Comm","value","OEORD",2,1,"I",1,1)
 /// debug: w ##class(web.DHCDocMain).Call("web.DHCDocMain","Comm","value","OEORD",2,1,"I",1,1)
 ClassMethod Call(class As %String, method As %String, ByRef nodes...) As %String
@@ -178,8 +165,10 @@ ClassMethod Call(class As %String, method As %String, ByRef nodes...) As %String
         s nodeString = nodeString_","""_nodes(i)_""""
     }
     
+   
     s location = location_"("_$e(nodeString,2,*)_")"
     
+
     // 提取值
     s exe = "s rtn = " _ location
     x exe
@@ -194,7 +183,6 @@ ClassMethod Call(class As %String, method As %String, ByRef nodes...) As %String
 
 ClassMethod Stack()
 {
-	;add by gry V8.4
 	s PLACE="",MCODE=""
 	kill tmpStackAry
 	s levelDeep=$STACK(-1)

@@ -12,4 +12,11 @@ ClassMethod Sum(a, b)
     return a + b
 }
 
+ClassMethod Debug(a, b)
+{
+    s x = 1
+    break "S" ; step by step
+    s y = x + 1
+}
+
 }

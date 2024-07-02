@@ -12,10 +12,10 @@
 
 
 # Bool
-- & and
-- || or
+- & , && and (short circuit)
+- ! , || or (short circuit)
 - ' not
 - , and
-- !
+
 
 
