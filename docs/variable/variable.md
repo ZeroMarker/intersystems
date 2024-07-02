@@ -2,6 +2,7 @@
 -	进程Global, ^||a
 -	Global, ^a
 -	特殊变量
+
 $HOROLOG
 $JOB
 $NAMESPACE
@@ -20,3 +21,9 @@ $ZERROR
 %ROWID
 
 SQLCODE
+
+
+SET $NAMESPACE="USER"
+SET ^GBL(1)="test"
+SET $NAMESPACE="%SYS"
+WRITE $DATA(^$|"USER"|GLOBAL("^GBL"))

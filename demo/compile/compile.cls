@@ -9,7 +9,6 @@ Class demo.compile.compile Extends %RegisteredObject
 */
 ClassMethod Compile()
 {
-    // compile
     // Do $system.OBJ.ShowFlags()
     d $System.OBJ.Compile("test.cls")
     d $System.OBJ.CompileList("test.mac")
