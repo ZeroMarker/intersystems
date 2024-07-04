@@ -1,9 +1,10 @@
-clear screen, write #
+write #
 
-!ls     **external command**
+!ls
 
 halt
-
+```objectscript
 w $system.Process.BreakMode(0)
 ignore BREAKs
 w $system.Process.BreakMode(1)
+```

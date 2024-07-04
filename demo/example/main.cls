@@ -127,6 +127,7 @@ ClassMethod Comm(type As %String, global As %String, piece As %Integer, ByRef no
     // 遍历节点参数并构建位置字符串
     f i=1:1:nodes {
         s nodeString = nodeString_","""_nodes(i)_""""
+        return:nodes(i)="" ""
     }
     
     // 构建最终的全局变量引用

@@ -28,7 +28,6 @@ docker exec -it iris iris terminal IRIS
 
 ## Stop IRIS container when you don't need it:
 ```sh
-# stop
 docker stop iris
 ```
 
