@@ -101,6 +101,14 @@ ClassMethod init(x)
     s x = 1
 }
 
+ClassMethod Second()
+{
+    w $now()     ;timezone time
+    w $zts()    ;global time
+    w $zdt($zts,3,1,6)
+    w $zdt($now(),3,1,6)
+}
+
 /// 获取Global中的值
 /// 兼容$piece, $order, $listget
 /// "order" 获取 $o
@@ -181,7 +189,57 @@ ClassMethod Call(class As %String, method As %String, ByRef nodes...) As %String
     // 返回结果
     q rtn
 }
+/// w ##class(web.DHCDocMain).Show("discharge","", 44)
+ClassMethod Show(global, zw = "", nodes...)
+{
+    // 构建全局变量位置
+    s location = "^"_global
+    s nodeString = ""
+    
+    // 遍历节点参数并构建位置字符串
+    f i=1:1:nodes {
+        s nodeString = nodeString_","""_nodes(i)_""""
+        return:nodes(i)="" ""
+    }
 
+    // 构建最终的全局变量引用
+  
+    s location = "$o("_location_"("_$e(nodeString,2,*)_",sub"_")"_")"
+    
+    s zwLocation = "^"_global_"("_$e(nodeString,2,*)_")"
+    if zw = "Y" {
+		s exe = "zw "_zwLocation
+		x exe    
+	}
+    /*
+    // 提取值
+    s exe = "s sub = 0"_$c(13,10)_
+    		"for { "_$c(13,10)_
+    		"	s sub = " _ location _$c(13,10)_
+    		"	q:sub="""""_$c(13,10)_
+    		"	s rtn = rtn_"",""_sub"_$c(13,10)_
+    		"	w sub,!"_$c(13,10)_
+    		"}"
+    x exe
+    s value = @"rtn"
+    
+    // 从值中提取指定部分
+    ;s rtn = $p(value, "^", piece)
+    */
+    // 遍历子节点并构建结果字符串
+    s @"sub" = 0
+    s exe = "s sub = "_location
+    s result = ""
+    s sub = ""
+    for {
+	    x exe
+        s sub = @"sub"
+        quit:sub=""
+        s result = result_$c(13,10)_sub
+    }
+    // 返回结果字符串，去掉开头的逗号
+    q $EXTRACT(result, 3, *)
+}
 ClassMethod Stack()
 {
 	s PLACE="",MCODE=""
