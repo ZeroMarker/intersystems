@@ -16,25 +16,6 @@ Property Age As %Integer;
 /// phone index
 Index PhoneIdx On Phone As Exact;
 
-ClassMethod DQuery()
-{
-    SET myquery = "SELECT top 40 * FROM demo.Person"
-    SET tStatement = ##class(%SQL.Statement).%New()
-    SET tStatus = tStatement.%Prepare(myquery)
-    SET rset = tStatement.%Execute()
-    DO rset.%Display()
-    WRITE !,"End of data"
-}
-
-/// Others: d ##class(Demo.Person).GetPatientBirthday(3)
-ClassMethod GetPatientBirthday(RowId As %String) As %String
-{
-    quit:RowId="" ""
-    set PatientStr = $Get(^["USER"]demo.PersonD(RowId))  // 获取数据串
-    set PaperDob = $Piece(PatientStr,"^",6)     // 截取所需字段
-    s:PaperDob'="" PaperDob=$ZDATE(PaperDob, 3)
-    quit PaperDob
-}
 
 Method GetName()
 {

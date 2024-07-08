@@ -1,6 +1,10 @@
 Class demo.sys.sys Extends %RegisteredObject
 {
 
+/**
+    * if Namespace exist
+    * @param namespace
+*/
 /// https://docs.intersystems.com/iris20233/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_sroutine
 /// https://docs.intersystems.com/iris20233/csp/docbook/Doc.View.cls?KEY=ITECHREF_routine
 ClassMethod sys()
@@ -16,6 +20,9 @@ ClassMethod Exist()
     q $lb(rtn1, rtn2)
 }
 
+/**
+    * switch namespace
+*/
 ClassMethod NameSpace()
 {
     zn "HSLIB"
@@ -24,8 +31,26 @@ ClassMethod NameSpace()
     q $zv
 }
 
-ClassMethod RunClassMethod()
+/**
+    * Run ClassMethod
+    * @param class
+    * @param method
+    * @param args
+    * @return value
+    * @debug w ##class(demo.compile.compile).ClassMethod("demo.compile.compile","GetInfo")
+*/
+ClassMethod ClassMethod(class, method, args...)
 {
-    set obj=$CLASSMETHOD("demo.example.main","%OpenId",1)
+    q $CLASSMETHOD(class,method,args)
+}
+/**
+    * print system information
+*/
+ClassMethod Interesting() [ Language = objectscript ]
+{
+    write "Today's date: "_$ZDATE($HOROLOG,3)
+    write !,"Your installed version: "_$ZVERSION
+    write !,"Your username: "_$USERNAME
+    write !,"Your security roles: "_$ROLES
 }
 }

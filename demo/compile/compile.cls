@@ -2,32 +2,35 @@ Class demo.compile.compile Extends %RegisteredObject
 {
 
 /**
-    * Compiles
-    * @param string package
-    * @param string class
+    * Compile
+    * @param string class or routinue
     * @return void
 */
-ClassMethod Compile()
+ClassMethod Compile(class)
 {
     // Do $system.OBJ.ShowFlags()
-    d $System.OBJ.Compile("test.cls")
+    d $System.OBJ.Compile(class)
     d $System.OBJ.CompileList("test.mac")
 
     d ##class(%Routine).CompileList("test.mac")
 }
 
-ClassMethod GetInfo(Package, Class)
+/**
+    * Get Class Infomation
+    * @param Class Location
+    * @return void
+    * @print Class Infomation
+*/
+ClassMethod GetInfo(className)
 {
-    Set className = "demo.entity.Person"
-
     ; Get class information
     Set classInfo = ##class(%Dictionary.ClassDefinition).%OpenId(className)
 
     ; Check if the class exists
     If $IsObject(classInfo) {
-        
         w "Class Type:", !
         w classInfo.ClassType, !
+
         ; Get properties
         Write "Properties:", !
         For i = 1:1:classInfo.Properties.Count() {
@@ -77,22 +80,10 @@ ClassMethod GetInfo(Package, Class)
     q 0
 }
 
-ClassMethod ClassMethod()
-{
-    q $CLASSMETHOD("demo.compile.compile","GetInfo")
-}
 
-ClassMethod Symbol()
-{
-    w "Hello", !, !
-    w "Hello"_$c(13,10)
-    s x = 1, y = 0
-    if (x = 1 ! y = 0) {
-        w "Hello"
-    }
-    q 0
-}
-
+/**
+    * test for macro
+*/
 ClassMethod Macro()
 {
     // Macros
