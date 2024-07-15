@@ -220,5 +220,35 @@ ClassMethod Stack()
     i PlaceLen>600 s PLACE=$e(PLACE,1,600)
 	q PLACE
 }
+ClassMethod GenerateGetSetMethods(className As %String)
+{
+    // 获取类定义
+    Set classDef = ##class(%Dictionary.ClassDefinition).%OpenId(className)
+    If classDef = "" {
+        Write "Class not found", !
+        Quit
+    }
 
+    // 遍历类的属性
+    Set properties = classDef.Properties
+    For i=1:1:properties.Count() {
+        Set property = properties.GetAt(i)
+        Set propertyName = property.Name
+        Set propertyType = property.Type
+
+        // 生成 get 方法
+        Set getMethod = "Method Get"_propertyName_"() As "_propertyType_" { Quit .."_propertyName_" }"
+        
+        // 生成 set 方法
+        Set setMethod = "Method Set"_propertyName_"(p"_propertyName_" As "_propertyType_") { Set .."_propertyName_" = p"_propertyName_" }"
+
+        // 添加方法到类定义
+        Do classDef.Methods.Insert(##class(%Dictionary.MethodDefinition).%New(getMethod))
+        Do classDef.Methods.Insert(##class(%Dictionary.MethodDefinition).%New(setMethod))
+    }
+
+    // 保存类定义
+    Do classDef.%Save()
+    Write "Get and Set methods generated successfully.", !
+}
 }
