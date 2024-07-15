@@ -62,44 +62,6 @@ Method MyMethod(argument1, ByRef argument2 As %String, Output argument3 As %Stri
     Write "argument3=", argument3
 }
 
-ClassMethod MultiArg(Arg1... As %List) [ Language = objectscript ]
-{
-    Set args = $GET(Arg1, 0)
-    Write "Invocation has ",
-        args,
-        " element",
-        $SELECT((args=1):"", 1:"s"), !
-    For i = 1 : 1 : args
-    {
-        Write "Argument[", i , "]: ", $GET(Arg1(i), "<NULL>"), !
-    }
-}
-
-/// d ##class(demo.example.main).MultiArgPy(1,3)
-ClassMethod MultiArgPy(Arg1... As %List) [ Language = python ]
-{
-    print("Invocation has", len(Arg1), "elements")
-    for i in range(len(Arg1)):
-        print("Argument[" + str(i+1) + "]: " + str(Arg1[i]))
-}
-
-
-
-ClassMethod Tests()
-{
-    k x
-    d ..init(.x)
-    s y = 2
-    d Init(2)
-Init(Para)
-    w $g(x), !
-    w $g(Para), !
-}
-
-ClassMethod init(x)
-{
-    s x = 1
-}
 
 ClassMethod Second()
 {
@@ -108,24 +70,23 @@ ClassMethod Second()
     w $zdt($zts,3,1,6)
     w $zdt($now(),3,1,6)
 }
-
-/// 获取Global中的值
-/// 兼容$piece, $order, $listget
-/// "order" 获取 $o
-/// "value"	获取 $p
-/// --------------
-/// s Arcim = $p($g(^OEORD(1,"I",1,1)),"^",2)
-/// s Arcim = ##class(web.DHCDocMain).Comm("value","OEORD",2,1,"I",1,1)
-/// s Arcim = $p($g(^OEORD(ord,"I",item,1)),"^",2)
-/// s Arcim = ##class(web.DHCDocMain).Comm("value","OEORD",2,ord,"I",item,1)
-/// -------------------------------
-/// s item=$o(^OEORD(ord,"I",item))
-/// s item=##class(web.DHCDocMain).Comm("order","OEORD",1,ord,"I",item)
-/// -------------------------------
-/// (type类型, global名称, piece位置, nodes节点列表)
-/// debug: w ##class(web.DHCDocMain).Comm("value","OEORD",2,1,"I",1,1)
-/// debug: w ##class(web.DHCDocMain).Comm("order","OEORD",1,1,"I",1)
-/// debug: w ##class(web.DHCDocMain).Comm("value list","User.DHCRegistrationFeeD",7,11)
+/**
+    * 获取Global中的值
+    * @author Mark Chen
+    * @param type
+                value   $piece()
+                order   $order()
+                value list $listget()
+    * @param global
+    * @param piece
+    * @param nodes
+    * @return value
+    * @debug
+        s Arcim = $p($g(^OEORD(1,"I",1,1)),"^",2)
+        w ##class(web.DHCDocMain).Comm("value","OEORD",2,1,"I",1,1)
+        w ##class(web.DHCDocMain).Comm("order","OEORD",1,1,"I",1)
+        w ##class(web.DHCDocMain).Comm("value list","User.DHCRegistrationFeeD",7,11)
+*/
 ClassMethod Comm(type As %String, global As %String, piece As %Integer, ByRef nodes...) As %String
 {
     // 构建全局变量位置
@@ -174,10 +135,8 @@ ClassMethod Call(class As %String, method As %String, ByRef nodes...) As %String
         s nodeString = nodeString_","""_nodes(i)_""""
     }
     
-   
     s location = location_"("_$e(nodeString,2,*)_")"
     
-
     // 提取值
     s exe = "s rtn = " _ location
     x exe
@@ -211,21 +170,7 @@ ClassMethod Show(global, zw = "", nodes...)
 		s exe = "zw "_zwLocation
 		x exe    
 	}
-    /*
-    // 提取值
-    s exe = "s sub = 0"_$c(13,10)_
-    		"for { "_$c(13,10)_
-    		"	s sub = " _ location _$c(13,10)_
-    		"	q:sub="""""_$c(13,10)_
-    		"	s rtn = rtn_"",""_sub"_$c(13,10)_
-    		"	w sub,!"_$c(13,10)_
-    		"}"
-    x exe
-    s value = @"rtn"
     
-    // 从值中提取指定部分
-    ;s rtn = $p(value, "^", piece)
-    */
     // 遍历子节点并构建结果字符串
     s @"sub" = 0
     s exe = "s sub = "_location

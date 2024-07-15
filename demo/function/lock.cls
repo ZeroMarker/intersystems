@@ -1,6 +1,9 @@
 Class demo.function.lock Extends %RegisteredObject
 {
 
+/**
+    * lock something
+*/
 ClassMethod lock()
 {
     s id = 0
