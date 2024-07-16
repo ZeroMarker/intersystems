@@ -17,7 +17,6 @@ ClassMethod Square(input As %Integer) As %Integer
     return answer
 }
 
-
 ClassMethod AddressWrapper() As %String [ Language = objectscript ]
 {
     return ..#ADDRESS
@@ -62,14 +61,14 @@ Method MyMethod(argument1, ByRef argument2 As %String, Output argument3 As %Stri
     Write "argument3=", argument3
 }
 
-
 ClassMethod Second()
 {
-    w $now()     ;timezone time
-    w $zts()    ;global time
+    w $now()        ;timezone time
+    w $zts          ;global time
     w $zdt($zts,3,1,6)
     w $zdt($now(),3,1,6)
 }
+
 /**
     * 获取Global中的值
     * @author Mark Chen
@@ -148,6 +147,7 @@ ClassMethod Call(class As %String, method As %String, ByRef nodes...) As %String
     // 返回结果
     q rtn
 }
+
 /// w ##class(web.DHCDocMain).Show("discharge","", 44)
 ClassMethod Show(global, zw = "", nodes...)
 {
@@ -185,6 +185,7 @@ ClassMethod Show(global, zw = "", nodes...)
     // 返回结果字符串，去掉开头的逗号
     q $EXTRACT(result, 3, *)
 }
+
 ClassMethod Stack()
 {
 	s PLACE="",MCODE=""
@@ -220,6 +221,11 @@ ClassMethod Stack()
     i PlaceLen>600 s PLACE=$e(PLACE,1,600)
 	q PLACE
 }
+
+/**
+    *
+    * @debug d ##class(demo.example.main).GenerateGetSetMethods("demo.entity.Company")
+*/
 ClassMethod GenerateGetSetMethods(className As %String)
 {
     // 获取类定义
@@ -237,18 +243,31 @@ ClassMethod GenerateGetSetMethods(className As %String)
         Set propertyType = property.Type
 
         // 生成 get 方法
-        Set getMethod = "Method Get"_propertyName_"() As "_propertyType_" { Quit .."_propertyName_" }"
-        
-        // 生成 set 方法
-        Set setMethod = "Method Set"_propertyName_"(p"_propertyName_" As "_propertyType_") { Set .."_propertyName_" = p"_propertyName_" }"
+        Set getMethodName = "Get"_propertyName
+        Set getMethodCode = "Quit .."_propertyName
 
-        // 添加方法到类定义
-        Do classDef.Methods.Insert(##class(%Dictionary.MethodDefinition).%New(getMethod))
-        Do classDef.Methods.Insert(##class(%Dictionary.MethodDefinition).%New(setMethod))
+        // 生成 set 方法
+        Set setMethodName = "Set"_propertyName
+        Set setMethodCode = "Set .."_propertyName_" = p"_propertyName
+
+        // 创建并添加 get 方法到类定义
+        Set getMethod = ##class(%Dictionary.MethodDefinition).%New()
+        Set getMethod.Name = getMethodName
+        Do getMethod.ImplementationSet(getMethodCode)
+        Set getMethod.ReturnType = propertyType
+        Do classDef.Methods.Insert(getMethod)
+
+        // 创建并添加 set 方法到类定义
+        Set setMethod = ##class(%Dictionary.MethodDefinition).%New()
+        Set setMethod.Name = setMethodName
+        Do setMethod.ImplementationSet(setMethodCode)
+        Set setMethod.Formals = "p"_propertyName_" As "_propertyType
+        Do classDef.Methods.Insert(setMethod)
     }
 
     // 保存类定义
-    Do classDef.%Save()
+    s rtn = classDef.%Save()
     Write "Get and Set methods generated successfully.", !
 }
+
 }
