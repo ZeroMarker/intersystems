@@ -2,7 +2,7 @@
     "objectscript.conn": {
         "server": "localhost",
         "ns": "USER",
-        "active": false,
+        "active": true,
         "username": "_SYSTEM",
         "password": "sys"
     }

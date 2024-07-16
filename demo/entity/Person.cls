@@ -16,7 +16,6 @@ Property Age As %Integer;
 /// phone index
 Index PhoneIdx On Phone As Exact;
 
-
 Method GetName()
 {
     q $this.Name
