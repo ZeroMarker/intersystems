@@ -14,11 +14,16 @@ docker run -d \
     --name iris \
     intersystems/irishealth-community:latest-em
 
-##
+docker update --restart unless-stopped your_container_name
 
+##
 docker pull containers.intersystems.com/intersystems/irishealth-community:latest-em
 
 ```
+no: 不自动重启（默认）
+always: 无论退出状态，始终重启
+unless-stopped: 除非手动停止，否则始终重启
+on-failure: 仅当容器非正常退出时重启
 
 ## IRIS Terminal
 ```sh

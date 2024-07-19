@@ -269,5 +269,16 @@ ClassMethod GenerateGetSetMethods(className As %String)
     s rtn = classDef.%Save()
     Write "Get and Set methods generated successfully.", !
 }
-
+/// w ##class(web.DHCDocMain).diff($zdh("2024-07-18",3),$zth("17:00:00"))
+ClassMethod diff(date, time)
+{
+	s diff = ((+$h - date) * 60 * 60 * 24) + ($p($h,",",2) - time)
+	b ;;; diff
+	if diff > (60 * 60 * 24) {
+		q 0
+	}
+	else {
+		q 1	
+	}
+}
 }
