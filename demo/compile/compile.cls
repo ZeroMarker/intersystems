@@ -21,7 +21,7 @@ ClassMethod Compile(class)
     * @return void
     * @print Class Infomation
 */
-ClassMethod GetInfo(className)
+ClassMethod Info(className)
 {
     ; Get class information
     Set classInfo = ##class(%Dictionary.ClassDefinition).%OpenId(className)
@@ -79,7 +79,6 @@ ClassMethod GetInfo(className)
     }
     q 0
 }
-
 
 /**
     * test for macro

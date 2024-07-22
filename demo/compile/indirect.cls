@@ -1,7 +1,9 @@
 Class demo.compile.indirect Extends %RegisteredObject
 {
+
 ClassMethod indirect()
 {
+    d Start
 Start
  READ !,"Enter choice (1, 2, or 3): ",num
  SET loc = "Choice"_num 
@@ -32,4 +34,5 @@ Output()
  WRITE !,@array@(i,x,y)
  QUIT
 }
+
 }

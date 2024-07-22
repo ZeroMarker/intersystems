@@ -8,13 +8,13 @@ ClassMethod sql() [ Language = python ]
     for row in rset:
         print(row)
 }
+
 /**
-    *
-    * @docs https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=AFL_epython
+	* @docs https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=AFL_epython
     * @docs https://docs.intersystems.com/supplychainlatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_reference_gref
     * @docs https://docs.intersystems.com/supplychainlatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_sharedata
-    * @debug
-        do ##class(%SYS.Python).Shell()
+	* @debug
+		do ##class(%SYS.Python).Shell()
         g = iris.cls('User.Globals')
         g.SetSquares(6)
         g.PrintSquares()
@@ -27,10 +27,10 @@ ClassMethod sql() [ Language = python ]
             value = m[key]
             print(f'{key} = {value}')
 */
-ClassMethod print() [ Language = python ]
+ClassMethod Shell() [ Language = python ]
 {
-    print("Hello World!")
 }
+
 ClassMethod SetSquares(x) [ Language = python ]
 {
     import iris
@@ -42,6 +42,7 @@ ClassMethod SetSquares(x) [ Language = python ]
         value = key * key
         square.set([key], value)
 }
+
 ClassMethod PrintSquares() [ Language = python ]
 {
     import iris
@@ -54,6 +55,7 @@ ClassMethod PrintSquares() [ Language = python ]
         flag = square.data([key])
         print('The square of ' + str(key) + ' is ' + str(square.get([key])))
 }
+
 /**
 	* 获取就诊医嘱列表
 	* @debug w ##class(web.DHCDocMain).Py(1)
@@ -85,6 +87,7 @@ ClassMethod Py(EpisodeID As %String = "") As %Status [ Language = python ]
 	# print(flag)
 	return json_output
 }
+
 /**
 	* 判断住院科室
 	* @debug w ##class(web.DHCDocMain).Python(66)
@@ -96,40 +99,10 @@ ClassMethod Python(LocId) [ Language = python ]
 	import iris
 	obj = iris.cls('User.CTLoc')._OpenId(LocId)
 	type = obj.CTLOCClinicType
-	"""
-	obj.CTLOCClinicType = 'I'
-	status = obj._Save()
-	try:
-		iris.check_status(status)
-	except Exception as ex:
-	print(ex)
-	if iris.cls('%SYSTEM.Status').IsError(status):
-		iris.cls('%SYSTEM.Status').DisplayError(status)
-	"""
 	if type == 'I' :
 		return 1
 	else:
 		return 0
 }
-/**
-	* 判断住院科室
-	* @debug w ##class(web.DHCDocMain).Java()
-*/
-ClassMethod Java() [ Language = java ]
-{
-	/*
-	q:LocId="" 0
-	s obj = ##class(User.CTLoc).%OpenId(LocId)
-	s type = ""
-	s:obj'="" type = obj.CTLOCClinicType
-	if type = "I" {
-		s flag = 1
-	}
-	else {
-		s flag = 0	
-	}
-	q flag
-	*/
-	System.out.println("Hello, World!");
-}
+
 }
