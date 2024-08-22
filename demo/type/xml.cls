@@ -22,7 +22,10 @@ ClassMethod Char()
     ZWRITE ^CacheStream
     q 0
 }
-
+ClassMethod Read()
+{
+    s reader = ##class(%XML.Reader).%New()
+}
 ClassMethod ToString()
 {
     s name = "Mark"
@@ -36,27 +39,27 @@ ClassMethod ToString()
     
     set status=writer.StartDocument()
     
-    set status=writer.RootElement("IDRoot")
-    set status=writer.Element("SampleElement")
-    set status=writer.WriteAttribute("Attribute","12345")
-    
-    set status=writer.Element("Name")
-    set status=writer.WriteChars(name)
-    /*
-    set status=writer.Element("Name")
-    set status=writer.WriteChars(name)
-    set status=writer.EndElement()
-    */
-    set status=writer.EndElement()
-    
-    set status=writer.Element("Age")
-    set status=writer.WriteChars(age)
-    set status=writer.EndElement()
+        set status=writer.RootElement("IDRoot")
+            set status=writer.Element("SampleElement")
+            set status=writer.WriteAttribute("Attribute","12345")
+            
+                set status=writer.Element("Name")
+                set status=writer.WriteChars(name)
+                /*
+                set status=writer.Element("Name")
+                set status=writer.WriteChars(name)
+                set status=writer.EndElement()
+                */
+                set status=writer.EndElement()
+                
+                set status=writer.Element("Age")
+                set status=writer.WriteChars(age)
+                set status=writer.EndElement()
 
-    set status=writer.EndElement()
-    
-    set status=writer.EndRootElement()
-    
+            set status=writer.EndElement()
+        
+        set status=writer.EndRootElement()
+        
     set status=writer.EndDocument()
     
     s string=writer.GetXMLString()
