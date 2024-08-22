@@ -281,4 +281,13 @@ ClassMethod diff(date, time)
 		q 1	
 	}
 }
+ClassMethod New()
+{
+    Set cdef = ##class(%Dictionary.ClassDefinition).%New("Demo.Object.MyClass2")
+    Set cdef.Super = "%Persistent,%Populate"
+    Set pdef = ##class(%Dictionary.PropertyDefinition).%New("Demo.Object.MyClass:Code")
+    Do cdef.Properties.Insert(pdef)
+    Set pdef.Type = "%String"
+    Do cdef.%Save()
+}
 }
