@@ -290,4 +290,225 @@ ClassMethod New()
     Set pdef.Type = "%String"
     Do cdef.%Save()
 }
+
+/**
+    * Get Class Infomation
+    * @param Class Location
+    * @return void
+    * @print Class Infomation
+*/
+ClassMethod Info(className)
+{
+    ; Get class information
+    Set classInfo = ##class(%Dictionary.ClassDefinition).%OpenId(className)
+	
+    ; Check if the class exists
+    If $IsObject(classInfo) {
+        w "Class Type:", !
+		w classInfo.Super, !
+		
+        ; Get properties
+        Write "Properties:", !
+        For i = 1:1:classInfo.Properties.Count() {
+            Set propName = classInfo.Properties.GetAt(i).Name
+            Set propType = classInfo.Properties.GetAt(i).Type
+            Write propName, ":", propType ,!
+        }
+        
+        ; Get class parameters
+        Write "Parameters:", !
+        For i = 1:1:classInfo.Parameters.Count() {
+            Set paramName = classInfo.Parameters.GetAt(i).Name
+            Write paramName, !
+        }
+
+        ; Get methods
+        Write "Methods:",!
+        For i = 1:1:classInfo.Methods.Count() {
+            Set methodName = classInfo.Methods.GetAt(i).Name
+            Write "Method: ", methodName, !
+
+            ; Get method information
+            Set methodInfo = classInfo.Methods.GetAt(i)
+            
+            w methodInfo.Implementation.Read()
+            Write ! ; Add a newline for better readability
+        }
+        w "Indices:", !
+        Set indexList = classInfo.IndicesGet()
+        if $ISOBJECT(indexList) {
+            For i = 1:1:indexList.Count() {
+                Set indexName = indexList.GetAt(i).Name
+                Write "Index: ", indexName
+                w !
+            }
+        }
+        
+        w "Queries:", !
+        set QueryList = classInfo.QueriesGet()
+        if $ISOBJECT(QueryList) {
+            For i = 1:1:QueryList.Count() {
+                Set QueryName = QueryList.GetAt(i).Name
+                Write "Query: ", QueryName
+                w !
+            }
+        }
+
+    } Else {
+        Write "Class not found: ", className, !
+    }
+    q 0
+}
+
+/**
+    * @desc		生成方法
+    * @debug d ##class(User.Main).GenMethod("User.Test")
+*/
+ClassMethod GenMethod(className As %String)
+{
+    // 获取类定义
+    Set classDef = ##class(%Dictionary.ClassDefinition).%OpenId(className)
+    
+    If classDef = "" {
+        Write "Class not found", !
+        Quit
+    }
+	
+	// 清理 getter setter
+	d ..DelMethod(className)
+    // 遍历类的属性
+    Set properties = classDef.Properties
+    For i=1:1:properties.Count() {
+        Set property = properties.GetAt(i)
+        Set propertyName = property.Name
+        Set propertyType = property.Type
+
+        // 生成 get 方法
+        Set getMethodName = "Get"_propertyName
+        Set getMethodCode = "	Quit .."_propertyName
+
+        // 生成 set 方法
+        Set setMethodName = "Set"_propertyName
+        Set setMethodCode = "	Set .."_propertyName_" = p"_propertyName
+		
+        // 创建并添加 get 方法到类定义
+        Set getMethod = ##class(%Dictionary.MethodDefinition).%New()
+        Set getMethod.Name = getMethodName
+        Do getMethod.Implementation.WriteLine(getMethodCode)
+        Set getMethod.ReturnType = propertyType
+        s rtn = classDef.Methods.Insert(getMethod)
+        
+        // 创建并添加 set 方法到类定义
+        Set setMethod = ##class(%Dictionary.MethodDefinition).%New()
+        Set setMethod.Name = setMethodName
+        Do setMethod.Implementation.WriteLine(setMethodCode)
+        Do setMethod.FormalSpecSet("p"_propertyName_":"_propertyType)
+        s rtn = classDef.Methods.Insert(setMethod)
+    }
+
+    // 保存类定义
+    s rtn = classDef.%Save()
+    d ..Compile(className)
+    Write rtn , !
+}
+
+/**
+    *
+    * @debug d ##class(User.Main).GenMethod("User.Test")
+*/
+ClassMethod DelMethod(className As %String)
+{
+    // 获取类定义
+    Set classDef = ##class(%Dictionary.ClassDefinition).%OpenId(className)
+    
+    If classDef = "" {
+        Write "Class not found", !
+        Quit
+    }
+
+    // 遍历类的属性
+    Set properties = classDef.Properties
+    For i=1:1:properties.Count() {
+        Set property = properties.GetAt(i)
+        Set propertyName = property.Name
+        Set propertyType = property.Type
+
+        // 生成 get 方法
+        Set getMethodName = "Get"_propertyName
+        Set getMethodCode = "	Quit .."_propertyName_" + 1"
+
+        // 生成 set 方法
+        Set setMethodName = "Set"_propertyName
+        Set setMethodCode = "	Set .."_propertyName_" = p"_propertyName
+
+		Set obj = ##class(%Dictionary.MethodDefinition).%OpenId(className_"||"_setMethodName)
+		if obj '= "" {
+			s rtn = classDef.Methods.Remove(obj)
+		}
+		
+		Set obj = ##class(%Dictionary.MethodDefinition).%OpenId(className_"||"_getMethodName)
+		if obj '= "" {
+			s rtn = classDef.Methods.Remove(obj)	
+		}
+    }
+
+    // 保存类定义
+    s rtn = classDef.%Save()
+    d ..Compile(className)
+    Write rtn , !
+}
+
+/**
+    *
+    * @debug d ##class(User.Main).CreateClass("User.Test")
+*/
+ClassMethod CreateClass(className As %String)
+{
+	// 获取类定义
+    Set classDef = ##class(%Dictionary.ClassDefinition).%OpenId(className)
+    If classDef '= "" {
+        d ..DeleteClass(className)
+    }
+    
+    // 创建类
+    Set classDef = ##class(%Dictionary.ClassDefinition).%New(className)
+	Set rnt = classDef.SuperSet("%RegisteredObject")
+	
+	// 保存属性
+    Set newProperty = ##class(%Dictionary.PropertyDefinition).%New()
+    s rtn = newProperty.NameSet("Sex")
+    s rtn = newProperty.TypeSet("%String")
+    s rtn = classDef.Properties.Insert(newProperty)
+	
+	// 保存方法
+	s method = ##class(%Dictionary.MethodDefinition).%New(className_":"_"Print")
+	s rtn = method.FormalSpecSet("x1:%String,x2:%String")
+	s rtn = method.ReturnTypeSet("%String")
+	;s rtn = method.NameSet("Print")
+	// unknown
+	s rtn = method.CodeModeSet("code")
+	// class method
+	s rtn = method.ClassMethodSet(1)
+	s rtn = method.Implementation.WriteLine("	w x1,x2,!")
+	s rtn = method.Implementation.WriteLine("	w x1,x2,!")
+	s rtn = classDef.Methods.Insert(method)
+	
+    // 保存类定义
+    s rtn = classDef.%Save()
+    
+    d ..Compile(className)
+    Write rtn
+}
+
+/**
+    *
+    * @debug d ##class(User.Main).DeleteClass("User.Test")
+*/
+ClassMethod DeleteClass(className As %String)
+{
+    // 删除类
+    Set rtn = ##class(%Dictionary.ClassDefinition).%DeleteId(className)
+    Write rtn
+}
+
 }
