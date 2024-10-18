@@ -260,8 +260,8 @@ ClassMethod GenerateGetSetMethods(className As %String)
         // 创建并添加 set 方法到类定义
         Set setMethod = ##class(%Dictionary.MethodDefinition).%New()
         Set setMethod.Name = setMethodName
-        Do setMethod.ImplementationSet(setMethodCode)
-        Set setMethod.Formals = "p"_propertyName_" As "_propertyType
+        Do setMethod.Implementation.WriteLine(setMethodCode)
+        Do setMethod.FormalSpecSet("p"_propertyName_":"_propertyType)
         Do classDef.Methods.Insert(setMethod)
     }
 
@@ -511,4 +511,38 @@ ClassMethod DeleteClass(className As %String)
     Write rtn
 }
 
+/// w ##class(web.DHCDocMain).ConvertCTLocType("E")
+ClassMethod ConvertCTLocType(type)
+{
+	q:type="" ""
+	// 获取类定义
+    Set classDef = ##class(%Dictionary.ClassDefinition).%OpenId("User.CTLoc")
+    If classDef = "" {
+        Quit "Class not found"
+    }
+
+    // 遍历类的属性
+    Set properties = classDef.Properties
+    For i=1:1:properties.Count() {
+        Set property = properties.GetAt(i)
+        Set propertyName = property.Name
+        Set propertyType = property.Type
+
+        
+		if propertyName="CTLOCType" {
+			s display =  property.Parameters.GetAt("DISPLAYLIST")
+			s value = property.Parameters.GetAt("VALUELIST")
+			s displayList = $lfs(display,",")
+			s valueList = $lfs(value,",")
+		}
+    }
+    s desc = ""
+    for i = 1:1:$ll(valueList) {
+		s item = $lg(valueList,i)
+		if item = type {
+			s desc = $lg(displayList,i)	
+		}    
+	}
+	q desc
+}
 }
