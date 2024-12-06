@@ -2,9 +2,12 @@ write #
 
 !ls
 
+$zf(-100)
+
 halt
 ```objectscript
+ignore breakpoints
 w $system.Process.BreakMode(0)
-ignore BREAKs
+
 w $system.Process.BreakMode(1)
 ```

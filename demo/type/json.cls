@@ -85,5 +85,12 @@ ClassMethod Len()
     ;write "Number of elements in array: ", elementCount
     Quit elementCount
 }
-
+ClassMethod Iter()
+{
+    set test = ["a","b","c"]  // 动态数组是零基的
+    set iter = test.%GetIterator()
+    while iter.%GetNext(.key, .value) { 
+        write key_":"_value,!
+    }
+}
 }

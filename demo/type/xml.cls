@@ -117,5 +117,25 @@ ClassMethod ParseXML()
 	
 	// Close the reader
     Do reader.Close()
+
+    
+    
+    Set reader = ##class(%XML.Reader).%New()
+    
+    Do reader.OpenString(xml)    //将XML字符串加载到读取器中
+    s node = reader.Document.GetDocumentElement()    //获取根节点
+    d node.GetText(.text)
+    
+    if (node.HasChildNodes()){
+	    s text=""
+	    d node.MoveToFirstChild(1)
+	    d node.GetText(.text)
+	    s status = text
+    	While node.MoveToNextSibling(1) {
+	    	s text=""
+        	d node.GetText(.text)
+        	s message = text
+   		}
+	}
 }
 }

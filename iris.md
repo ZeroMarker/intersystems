@@ -4,8 +4,6 @@
 
 [Try for free](https://www.intersystems.com/try-intersystems-iris-for-free/)
 
-[yaoxin](https://yaoxin.blog.csdn.net/)
-
 [InterSystems Learning Services](https://www.youtube.com/@InterSystemsLearningServices)
 
 [InterSystems Developers](https://www.youtube.com/@InterSystemsDevelopers)
