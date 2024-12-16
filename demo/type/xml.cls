@@ -39,26 +39,26 @@ ClassMethod ToString()
     
     set status=writer.StartDocument()
     
-        set status=writer.RootElement("IDRoot")
-            set status=writer.Element("SampleElement")
-            set status=writer.WriteAttribute("Attribute","12345")
-            
-                set status=writer.Element("Name")
-                set status=writer.WriteChars(name)
-                /*
-                set status=writer.Element("Name")
-                set status=writer.WriteChars(name)
-                set status=writer.EndElement()
-                */
-                set status=writer.EndElement()
-                
-                set status=writer.Element("Age")
-                set status=writer.WriteChars(age)
-                set status=writer.EndElement()
-
-            set status=writer.EndElement()
+    set status=writer.RootElement("IDRoot")
+        set status=writer.Element("SampleElement")
+        set status=writer.WriteAttribute("Attribute","12345")
         
-        set status=writer.EndRootElement()
+            set status=writer.Element("Name")
+            set status=writer.WriteChars(name)
+            /*
+            set status=writer.Element("Name")
+            set status=writer.WriteChars(name)
+            set status=writer.EndElement()
+            */
+            set status=writer.EndElement()
+            
+            set status=writer.Element("Age")
+            set status=writer.WriteChars(age)
+            set status=writer.EndElement()
+
+        set status=writer.EndElement()
+    
+    set status=writer.EndRootElement()
         
     set status=writer.EndDocument()
     
@@ -118,8 +118,6 @@ ClassMethod ParseXML()
 	// Close the reader
     Do reader.Close()
 
-    
-    
     Set reader = ##class(%XML.Reader).%New()
     
     Do reader.OpenString(xml)    //将XML字符串加载到读取器中
@@ -137,5 +135,36 @@ ClassMethod ParseXML()
         	s message = text
    		}
 	}
+
+}
+
+ClassMethod StockInfo()
+{
+    Set xml = ..ToString()
+    
+    // Create an instance of the XML.Reader
+    s reader = ##class(%XML.Reader).%New()
+
+    // Load the XML string into the reader
+    d reader.OpenString(xml)
+    s document = reader.Document
+    s node = document.GetDocumentElement()
+    
+    d node.MoveToFirstChild(1)	; reponse
+    d node.MoveToFirstChild(1)	; header
+    d node.MoveToNextSibling(1)	; body
+    d node.MoveToFirstChild(1)	; stock_info
+    s stock = 0
+    if (node.HasChildNodes()){
+	    d node.MoveToFirstChild(1)
+    	While node.MoveToNextSibling(1) {
+	    	s name = node.LocalName
+        	if name = "PRODUCT_ID" {
+	        	d node.GetText(.text)
+	        	s stock = text
+	        }
+        	
+   		}
+    }
 }
 }
