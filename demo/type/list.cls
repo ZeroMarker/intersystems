@@ -102,4 +102,11 @@ ClassMethod ListMake()
     // for loop
     s $list(list, $ll($g(list))+1) = it
 }
+/// Description
+ClassMethod ListGet() As %Status
+{
+    s list = $lb(1, 2, 3, 4)
+    s value = $listget(list, *) // last value
+    s value = $listget(list, *-1) // last 2nd value
+}
 }
