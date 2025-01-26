@@ -109,4 +109,15 @@ ClassMethod ListGet() As %Status
     s value = $listget(list, *) // last value
     s value = $listget(list, *-1) // last 2nd value
 }
+ClassMethod Next() As %Status
+{
+    SET list = $LISTBUILD("Red", "Blue", , "Green")
+    SET ptr = 0, count = 0
+    WHILE $LISTNEXT(list, ptr, value) {
+        SET count = count + 1
+        WRITE !, count, ": ", $SELECT($DATA(value):value, 1:"omitted")
+    }
+    WRITE !, "End of list: ", count, " elements found"
+    QUIT
+}
 }

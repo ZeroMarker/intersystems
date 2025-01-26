@@ -1,5 +1,3 @@
-Include test
-
 Class demo.type.set Extends %RegisteredObject
 {
 
@@ -42,6 +40,7 @@ Method Exists(element As %String) As %Boolean
 Method ToList() As %String
 {
     Set i=1
+    Quit:..Items.Count()=0 ""
 	While (i <= ..Items.Count()) {
 	    Set item = ..Items.GetAt(i)
 	    s $list(list, i) = item
