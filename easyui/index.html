@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+<body>
+    <script>
+let xml = `<CheckResult 
+STATE="-1"
+CHECK_PHARMACIST_CODE="autocheck"
+CHECK_PHARMACIST_NAME="机器自动审核"
+CHECK_TIME="2025-01-17 13:29:56"
+URL="http://10.160.232.88:8080/PrescEvaluate/realtime/detail.do?prescId=46931436_2022-12-12 09:11:56&amp;inHospital=1&amp;LWOPKey=lincunfa&amp;UserID=doctor">  --审核结果链接
+    <CheckOutput>
+        <PresInfo ORDER_NO="4" ORDER_SUB_NO="1" GROUP_ID="4" DRUG_LO_ID="04826" DRUG_LO_NAME="富露施(吸入用乙酰半胱氨酸溶液)[0.3G 3ML/支]" UnSaveOnlyID="123">
+            <CheckInfo COLOR="红色" NAME="用法用量" WARNING_LEVEL="强制阻断" WARNING_INFO="医嘱中的处方剂量不能为空。处方书写不规范。用法不适宜" REF_SOURCE="药品说明书、医院及国家相关规定"/>--问题描述
+        </PresInfo>
+        <PresInfo ORDER_NO="1" ORDER_SUB_NO="1" GROUP_ID="1" DRUG_LO_ID="05766" DRUG_LO_NAME="*复方氯化铵甘草口服溶液[3% 200ML/瓶]"  UnSaveOnlyID="456"/>
+    </CheckOutput>
+</CheckResult>
+`
+
+const parser = new DOMParser();
+const xmlDoc = parser.parseFromString(xml, 'text/xml');
+
+// 获取药品信息
+const presInfos = xmlDoc.getElementsByTagName('PresInfo');
+for (let i = 0; i < presInfos.length; i++) {
+    const drugName = presInfos[i].getAttribute('DRUG_LO_NAME');
+    console.log(`药品名称: ${drugName}`);
+}
+    </script>
+</body>
+</html>
