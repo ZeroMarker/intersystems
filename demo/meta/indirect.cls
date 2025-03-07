@@ -35,4 +35,8 @@ Output()
  QUIT
 }
 
+ClassMethod Access(id)
+{
+    s name = @"^PAPER"@(id)
+}
 }
