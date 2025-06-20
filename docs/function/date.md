@@ -1,3 +1,5 @@
+# date
+
 $Zdate
 $ZdateH
 $Ztime

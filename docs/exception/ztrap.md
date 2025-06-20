@@ -1,3 +1,5 @@
+# Exception Handling
+
 ```objectscript
 set $zt = "ERROR"
 ERROR ;

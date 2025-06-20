@@ -1,3 +1,5 @@
+# Exception Handling
+
 ```objectscript
 TRY {
     // Code that might throw an exception

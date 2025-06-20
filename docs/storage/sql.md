@@ -1,3 +1,5 @@
+# 建立关系
+
 ```objectscript
 /// 子表建立关系
 Relationship DHCScParRef As DHCStudentGXA [ Cardinality = parent, Inverse = ChildScCourse, SqlFieldName = DHC_ScParRef ];

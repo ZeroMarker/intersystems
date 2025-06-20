@@ -1,7 +1,12 @@
--	a
--	^||a
--	^a
--	$h
+# variable
+
+a
+
+^||a
+
+^a
+
+$h
 
 $HOROLOG
 $JOB
